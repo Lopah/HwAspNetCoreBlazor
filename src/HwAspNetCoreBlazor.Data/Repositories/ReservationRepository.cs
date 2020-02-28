@@ -34,10 +34,13 @@ namespace HwAspNetCoreBlazor.Data.Repositories
             return selected.Select(x => _mapper.Map<ReservationModel>(x)).ToList();
         }
 
-        // TODO: If I ever want to set id, implement this.
-        public Task<ReservationModel> GetByIdAsync(int id)
+        public async Task<ReservationModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var selected = await _context.Reservations
+                .Where(e => e.Id == id)
+                .ToListAsync();
+
+            return selected.Select(x => _mapper.Map<ReservationModel>(x)).FirstOrDefault();
         }
     }
 }

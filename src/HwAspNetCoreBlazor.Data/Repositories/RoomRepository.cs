@@ -27,10 +27,13 @@ namespace HwAspNetCoreBlazor.Data.Repositories
             return selected.Select(x => _mapper.Map<RoomModel>(x)).ToList();
         }
 
-        // TODO: If I ever want to set id, implement this.
-        public Task<RoomModel> GetByIdAsync(int id)
+        public async Task<RoomModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var selected = await _context.Rooms
+                .Where(e => e.Id == id)
+                .ToListAsync();
+
+            return selected.Select(x => _mapper.Map<RoomModel>(x)).FirstOrDefault();
         }
 
         public async Task<RoomModel> GetByNameAsync(string name)
