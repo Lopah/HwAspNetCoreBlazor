@@ -31,6 +31,8 @@ namespace HwAspNetCoreBlazor.Core.Models
         [Required]
         public int OpeningTimeTo { get; set; }
 
+        public int ReservationsCount => Reservations.Count;
+
         public IList<ReservationModel> Reservations { get; set; }
     }
 }

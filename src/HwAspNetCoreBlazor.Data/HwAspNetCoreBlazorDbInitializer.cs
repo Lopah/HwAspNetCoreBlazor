@@ -14,8 +14,7 @@ namespace HwAspNetCoreBlazor.Data
             using (var context = new HwAspNetCoreBlazorDbContext(serviceProvider
                 .GetRequiredService<DbContextOptions<HwAspNetCoreBlazorDbContext>>()))
             {
-                if (context.Rooms.Any()
-                    || context.Reservations.Any())
+                if (context.Rooms.Any() || context.Reservations.Any())
                     return;
 
                 context.Rooms.AddRange(
@@ -75,6 +74,7 @@ namespace HwAspNetCoreBlazor.Data
                             }
                         }
                     });
+                context.SaveChanges();
             }
         }
     }
