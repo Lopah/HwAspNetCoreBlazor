@@ -22,9 +22,10 @@
       "launchBrowser": true,
       "launchUrl": "api/Rooms",
       "environmentVariables": {
-        "ConnectionString": "Server=(localdb)\\\\mssqllocaldb;Database=HwASpNetCoreBlazor-db;Trusted_Connection=True;MultipleActiveResultSets=true",
+        "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=HwAspNetCoreBlazor-db;Trusted_Connection=True;MultipleActiveResultSets=true",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
+      "sqlDebugging": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }

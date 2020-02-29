@@ -5,7 +5,7 @@ namespace HwAspNetCoreBlazor.Core.Models
 {
     public class ReservationModel
     {
-        [Required, DataType(DataType.DateTime)]
+        [Required, DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}"), DataType(DataType.Date)]
         public DateTime ReservationDateTime { get; set; }
 
         [Required, StringLength(maximumLength:50, ErrorMessage = "The {0} needs to be at least {1} and under {2} characters long.", MinimumLength = 1)]
@@ -21,7 +21,5 @@ namespace HwAspNetCoreBlazor.Core.Models
 
         [StringLength(maximumLength:500, ErrorMessage = "Your notes are too long.")]
         public string Notes { get; set; }
-
-        public RoomModel Room { get; set; }
     }
 }

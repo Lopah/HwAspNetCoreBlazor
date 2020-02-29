@@ -24,12 +24,12 @@ namespace HwAspNetCoreBlazor.API
         {
             services.AddDbContext<HwAspNetCoreBlazorDbContext>(options =>
             {
-                options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"));
             });
-
+            services.ConfigureMappingProfiles();
+            
             services.RegisterRepositories( );
-
-            services.ConfigureMappingProfiles( );
 
             services.AddControllers( );
         }
