@@ -14,10 +14,10 @@ namespace HwAspNetCoreBlazor.Extensions
         {
             services.AddHttpClient("reservationService", c =>
             {
-               c.BaseAddress = new Uri("https://localhost");
-            })
-            .AddHttpMessageHandler<ValidateHeaderHandler>()
-            .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+                c.BaseAddress = new Uri("https://localhost");
+            });
+            //.AddHttpMessageHandler<ValidateHeaderHandler>()
+            //.SetHandlerLifetime(TimeSpan.FromMinutes(5));
         }
 
         public static void ConfigureRoomService( this IServiceCollection services)
@@ -25,8 +25,8 @@ namespace HwAspNetCoreBlazor.Extensions
             services.AddHttpClient("roomService", c =>
             {
                 c.BaseAddress = new Uri("https://localhost");
-            })
-            .AddHttpMessageHandler<ValidateHeaderHandler>();
+            });
+            //.AddHttpMessageHandler<ValidateHeaderHandler>();
         }
     }
 }
