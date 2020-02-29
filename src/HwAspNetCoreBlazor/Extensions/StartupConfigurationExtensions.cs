@@ -16,7 +16,8 @@ namespace HwAspNetCoreBlazor.Extensions
             {
                c.BaseAddress = new Uri("https://localhost");
             })
-            .AddHttpMessageHandler<ValidateHeaderHandler>();
+            .AddHttpMessageHandler<ValidateHeaderHandler>()
+            .SetHandlerLifetime(TimeSpan.FromMinutes(5));
         }
 
         public static void ConfigureRoomService( this IServiceCollection services)

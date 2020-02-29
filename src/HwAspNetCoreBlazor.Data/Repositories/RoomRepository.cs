@@ -2,7 +2,6 @@
 using HwAspNetCoreBlazor.Core.Interfaces.Repositories;
 using HwAspNetCoreBlazor.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +21,9 @@ namespace HwAspNetCoreBlazor.Data.Repositories
 
         public async Task<IList<RoomModel>> GetAllAsync()
         {
-            var selected = await _context.Rooms.ToListAsync();
+            var selected = await _context.Rooms
+                .Include(p => p.Reservations)
+                .ToListAsync();
 
             return selected.Select(x => _mapper.Map<RoomModel>(x)).ToList();
         }
