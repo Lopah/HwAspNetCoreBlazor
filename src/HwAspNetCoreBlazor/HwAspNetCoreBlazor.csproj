@@ -23,6 +23,10 @@
     <Folder Include="Pages\Rooms\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HwAspNetCoreBlazor.Core\HwAspNetCoreBlazor.Core.csproj" />
+  </ItemGroup>
+
 
 
 </Project>
