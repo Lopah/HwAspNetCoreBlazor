@@ -1,3 +1,4 @@
+using HwAspNetCoreBlazor.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,12 @@ namespace HwAspNetCoreBlazor
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.ConfigureHeaderValidation();
+
+            services.ConfigureReservationService();
+
+            services.ConfigureRoomService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
