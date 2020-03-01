@@ -10,5 +10,6 @@ namespace HwAspNetCoreBlazor.Core.Interfaces.Repositories
     {
         Task<IList<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
+        Task<T> AddAsync(T entity);
     }
 }

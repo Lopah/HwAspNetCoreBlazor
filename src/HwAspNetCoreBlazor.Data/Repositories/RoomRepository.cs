@@ -2,6 +2,7 @@
 using HwAspNetCoreBlazor.Core.Interfaces.Repositories;
 using HwAspNetCoreBlazor.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,11 @@ namespace HwAspNetCoreBlazor.Data.Repositories
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public Task<RoomModel> AddAsync(RoomModel entity)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IList<RoomModel>> GetAllAsync()
@@ -41,6 +47,7 @@ namespace HwAspNetCoreBlazor.Data.Repositories
         {
             var selected = await _context.Rooms
                 .Where(e => e.Name == name)
+                .Include(e => e.Reservations)
                 .ToListAsync();
 
             return selected.Select(x => _mapper.Map<RoomModel>(x)).FirstOrDefault();
