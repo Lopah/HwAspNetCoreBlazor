@@ -5,6 +5,17 @@ namespace HwAspNetCoreBlazor.Core.Models
 {
     public class ReservationModel
     {
+        /// <summary>
+        /// Represents the beginning hour when a given Reservation begins.
+        /// <list type="bullet">
+        /// <item>
+        /// <description>All reservations last 1 hour</description>
+        /// </item>
+        /// <item>
+        /// <description>All reservations have no minutes => they are in whole hours</description>
+        /// </item>
+        /// </list>
+        /// </summary>
         [Required, DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}"), DataType(DataType.Date)]
         public DateTime ReservationDateTime { get; set; }
 

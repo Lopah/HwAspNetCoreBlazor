@@ -1,11 +1,32 @@
 ﻿@page
 @model HwAspNetCoreBlazor.Pages.IndexModel
 
-@{ 
-    ViewData["Title"] = "Home page";
+@{
+    ViewData["Title"] = "Rooms";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>This is a sample message that should show on index.</p>
+<div class="d-flex align-content-center flex-wrap">
+    @foreach (var item in Model.Rooms)
+    {
+        <div class="card ml-4 mr-4" style="width: 18rem;">
+            <div class="card-header">
+                <h5 class="card-title text-center">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </h5>
+            </div>
+            <div class="card-body">
+                <p>
+                    @if (item.Description.Length >= 200)
+                    {
+                        @Html.DisplayFor(modelItem => item.Description.Substring(0, 197) + "...")
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Description)
+                    }
+                </p>
+                <a asp-page="Rooms/Booking" asp-route-name="@item.Name" class="card-link">Book now!</a>
+            </div>
+        </div>
+    }
 </div>

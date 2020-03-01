@@ -1,0 +1,51 @@
+﻿@page
+@model HwAspNetCoreBlazor.Pages.Rooms.Booking
+
+@{
+    ViewData["Title"] = "Booking for room:" + Model.Room.Name;
+}
+
+<p>Room description: @Html.DisplayFor(modelItem => Model.Room.Description)</p>
+<hr />
+<div class="row">
+    <div class="col-6">
+        <div class="row">
+            <strong>Date</strong>
+            <input asp-for="SelectedDay" type="date" min="@DateTime.Now" />
+        </div>
+        <br />
+        <div class="row align-bottom">
+            <a asp-page="../Index" type="button" class="btn btn-secondary">Back</a>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="row">
+            <h5>Hour:</h5>
+        </div>
+        <br />
+        <div class="row">
+            @* Render all hours of the day, no checking logic for conflicting reservations as of yet. *@
+            @foreach (var timeslot in Model.TimesOfTheDay)
+            {
+
+                @if (timeslot.Value == null)
+                {
+                    <button class="btn btn-info ml-1 mr-2 mb-3" style="background-color:lawngreen;" asp-page-handler="SetTimeBlock">
+                        @Html.DisplayFor(timeslotModel => timeslot.Key)
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-info ml-1 mr-2 mb-3 disabled" style="background-color:red;">
+                        @Html.DisplayFor(timeslotModel =>timeslot.Key)
+                    </button>
+                }
+
+            }
+        </div>
+        <div class="row" align="right">
+            <a asp-page="./CustomerDetails" asp-route-room="@Model.Room.Name" class="btn btn-primary d-block mr-0 ml-auto">Next</a>
+        </div>
+
+    </div>
+</div>

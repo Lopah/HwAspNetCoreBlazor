@@ -1,4 +1,8 @@
-﻿using HwAspNetCoreBlazor.Middleware;
+﻿using AutoMapper;
+using HwAspNetCoreBlazor.Core.Interfaces.Repositories;
+using HwAspNetCoreBlazor.Data.Mappings;
+using HwAspNetCoreBlazor.Data.Repositories;
+using HwAspNetCoreBlazor.Middleware;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -27,6 +31,15 @@ namespace HwAspNetCoreBlazor.Extensions
                 c.BaseAddress = new Uri("https://localhost");
             });
             //.AddHttpMessageHandler<ValidateHeaderHandler>();
+        }
+
+        public static void ConfigureModelServicesAndMapper( this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(MappingProfile));
+
+            services.AddScoped<IRoomRepository, RoomRepository>();
+
+            services.AddScoped<IReservationRepository, ReservationRepository>();
         }
     }
 }
