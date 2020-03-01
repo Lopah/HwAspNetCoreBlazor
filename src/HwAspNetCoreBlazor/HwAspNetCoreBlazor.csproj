@@ -20,11 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Rooms\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\HwAspNetCoreBlazor.Core\HwAspNetCoreBlazor.Core.csproj" />
+    <ProjectReference Include="..\HwAspNetCoreBlazor.Data\HwAspNetCoreBlazor.Data.csproj" />
   </ItemGroup>
 
 
