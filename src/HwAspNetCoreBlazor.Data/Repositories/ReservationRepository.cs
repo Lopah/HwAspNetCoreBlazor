@@ -47,7 +47,8 @@ namespace HwAspNetCoreBlazor.Data.Repositories
         public async Task<ReservationModel> GetByHourAsync(DateTime time)
         {
             var selected = await _context.Reservations
-                .Where(e => e.ReservationDateTime.TimeOfDay == time.TimeOfDay)
+                .Where(e => e.ReservationDateTime.TimeOfDay == time.TimeOfDay
+                    && e.ReservationDateTime.Date == time.Date)
                 .ToListAsync();
 
             var mappedResults = selected.Select(x => _mapper.Map<ReservationModel>(x));

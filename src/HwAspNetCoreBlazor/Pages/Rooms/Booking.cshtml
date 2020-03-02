@@ -24,7 +24,6 @@
         </div>
         <br />
         <div class="row">
-            @* Render all hours of the day, no checking logic for conflicting reservations as of yet. *@
             @foreach (var timeslot in Model.TimesOfTheDay)
             {
 
@@ -44,7 +43,7 @@
             }
         </div>
         <div class="row" align="right">
-            <a asp-page="./CustomerDetails" asp-route-room="@Model.Room.Name" class="btn btn-primary d-block mr-0 ml-auto">Next</a>
+            <a asp-page="./CustomerDetails" asp-route-room="@Model.Room.Name" asp-route-timeslot="@Model.SelectedDay" class="btn btn-primary d-block mr-0 ml-auto">Next</a>
         </div>
 
     </div>
