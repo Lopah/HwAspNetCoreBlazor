@@ -15,10 +15,3 @@ This project contains two separate programs
 This project can be used to manage Rooms, where opening hours are defined which could be used to reserve Reservations for those rooms.
 
 * Most of the administration work is done in the WebApp project as it was a part of the assignment, but the same thing could be done on the API side as well, all that is needed is just adding POST request handling.
-
-* To properly setup this project you need to have
-	* Docker installed
-	* Knowledge how to operate nginx(TODO: Nginx links)
-	* Pulled my server(TODO: Add docker links)
-	* `docker compose -d`
-		        
