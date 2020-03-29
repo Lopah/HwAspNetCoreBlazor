@@ -1,33 +1,45 @@
-﻿using HwAspNetCoreBlazor.Core.Models;
-using System;
+﻿using HwAspNetCoreBlazor.Core.Interfaces.Repositories;
+using HwAspNetCoreBlazor.Core.Models;
+using HwAspNetCoreBlazor.Services.Interfaces;
+using HwAspNetCoreBlazor.ViewModel;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HwAspNetCoreBlazor.Services
 {
-    public class RoomService
+    public class RoomService : IRoomService
     {
-        private readonly HttpClient _client;
+        private readonly IRoomRepository _repository;
 
-        public RoomService(HttpClient client)
+        public RoomService(IRoomRepository repository)
         {
-            client.BaseAddress = new Uri("https://localhost");
-            client.DefaultRequestHeaders.Add("Accept", "application / frontend");
-            client.DefaultRequestHeaders.Add("User-Agent", "BlazorFrontEndSample");
-
-            _client = client;
+            _repository = repository;
         }
 
-        public async Task<IEnumerable<RoomModel>> GetRoomsFromApi()
+        public Task<Dictionary<string, string>> GetAllValidHours(RoomModel room)
         {
-            var response = await _client.GetAsync("/Rooms");
+            var timeslots = new Dictionary<string, string>();
 
-            response.EnsureSuccessStatusCode();
+            for (int i = room.OpeningTimeFrom; i < room.OpeningTimeTo; i++)
+            {
+                timeslots.Add($"{i}:00", $"{i + 1}:00");
+            }
+            return Task.FromResult(timeslots);
+        }
 
-            using var resourceStream = await response.Content.ReadAsStreamAsync();
-                return await JsonSerializer.DeserializeAsync<IEnumerable<RoomModel>>(resourceStream);
+        public async Task<PaginatedItemsViewModel<RoomModel>> GetPaginatedItemsAsync(int size, int index)
+        {
+            var totalRooms = await _repository.GetTotalRoomsCount();
+
+            var paginatedRooms = await _repository.GetRoomsPaginated(size, index);
+
+            return new PaginatedItemsViewModel<RoomModel>(
+                index, size, totalRooms, paginatedRooms);
+        }
+
+        public async Task<RoomModel> GetRoomByNameAsync(string name)
+        {
+            return await _repository.GetByNameAsync(name);
         }
     }
 }

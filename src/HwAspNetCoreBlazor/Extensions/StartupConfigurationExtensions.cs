@@ -1,32 +1,23 @@
-﻿using HwAspNetCoreBlazor.Middleware;
+﻿using HwAspNetCoreBlazor.Core.Interfaces.Repositories;
+using HwAspNetCoreBlazor.Data.Repositories;
+using HwAspNetCoreBlazor.Services;
+using HwAspNetCoreBlazor.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace HwAspNetCoreBlazor.Extensions
 {
     public static class StartupConfigurationExtensions
     {
-        public static void ConfigureHeaderValidation(this IServiceCollection services)
+        public static void ConfigureDataServices(this IServiceCollection services)
         {
-            services.AddTransient<ValidateHeaderHandler>();
-        }
-        public static void ConfigureReservationService(this IServiceCollection services)
-        {
-            services.AddHttpClient("reservationService", c =>
-            {
-               c.BaseAddress = new Uri("https://localhost");
-            })
-            .AddHttpMessageHandler<ValidateHeaderHandler>()
-            .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+            services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<IReservationService, ReservationService>();
         }
 
-        public static void ConfigureRoomService( this IServiceCollection services)
+        public static void ConfigureRepositories(this IServiceCollection services)
         {
-            services.AddHttpClient("roomService", c =>
-            {
-                c.BaseAddress = new Uri("https://localhost");
-            })
-            .AddHttpMessageHandler<ValidateHeaderHandler>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
         }
     }
 }

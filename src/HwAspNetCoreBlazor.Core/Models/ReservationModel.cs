@@ -8,15 +8,16 @@ namespace HwAspNetCoreBlazor.Core.Models
         [Required, DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}"), DataType(DataType.Date)]
         public DateTime ReservationDateTime { get; set; }
 
-        [Required, StringLength(maximumLength:50, ErrorMessage = "The {0} needs to be at least {1} and under {2} characters long.", MinimumLength = 1)]
+        [Required, Display(Name = "First name"), StringLength(maximumLength:50, ErrorMessage = "The {0} needs to be at least {2} and under {1} characters long.", MinimumLength = 1)]
         public string ClientName { get; set; }
-        [Required, StringLength(maximumLength:50, ErrorMessage = "The {0} needs to be at least {1} and under {2} characters long.", MinimumLength = 1)]
+        [Required, Display(Name ="Last name"), StringLength(maximumLength:50, ErrorMessage = "The {0} needs to be at least {2} and under {1} characters long.", MinimumLength = 1)]
         public string ClientSurname { get; set; }
 
-        [Required,DataType(DataType.EmailAddress, ErrorMessage = "Please enter a valid email address.")]
+        [Required, Display(Name = "Email"), DataType(DataType.EmailAddress, ErrorMessage = "Please enter a valid email address.")]
         public string ClientEmail { get; set; }
 
-        [Required,DataType(DataType.PhoneNumber, ErrorMessage = "Please enter a correct phone number.")]
+        [Required, Display(Name = "Telephone"), DataType(DataType.PhoneNumber, ErrorMessage = "Please enter a correct phone number.")]
+        [RegularExpression(@"^\+[0-9]{3}\s[0-9]{3}\s[0-9]{3}\s[0-9]{3}$", ErrorMessage = "Your {0} number needs to be in +XXX XXX XXX XXX format!")]
         public string ClientPhone { get; set; }
 
         [StringLength(maximumLength:500, ErrorMessage = "Your notes are too long.")]

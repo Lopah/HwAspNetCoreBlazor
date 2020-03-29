@@ -31,6 +31,7 @@ namespace HwAspNetCoreBlazor.Data.Repositories
         public async Task<RoomModel> GetByIdAsync(int id)
         {
             var selected = await _context.Rooms
+                .Include(e => e.Reservations)
                 .Where(e => e.Id == id)
                 .ToListAsync();
 
@@ -41,11 +42,10 @@ namespace HwAspNetCoreBlazor.Data.Repositories
         {
             var selected = await _context.Rooms
                 .Where(e => e.Name == name)
+                .Include(e => e.Reservations)
                 .ToListAsync();
 
             return selected.Select(x => _mapper.Map<RoomModel>(x)).FirstOrDefault();
-
-            // TODO: Decide if I want to throws errors for not found objects here or in controller.
         }
 
         public async Task<IList<RoomModel>> GetByTimeFromAsync(int timeFrom)
@@ -74,6 +74,46 @@ namespace HwAspNetCoreBlazor.Data.Repositories
                 .ToListAsync();
 
             return selected.Select(x => _mapper.Map<RoomModel>(x)).ToList();
+        }
+
+        public async Task<IList<RoomModel>> GetRoomByDateAsync()
+        {
+            var selected = await _context.Rooms
+                .Include(e => e.Reservations)
+                .ToListAsync();
+
+            return selected.Select(x => _mapper.Map<RoomModel>(x)).ToList();
+        }
+
+        public async Task<RoomModel> GetRoomByNameAndDateAsync(string name, int timeFrom)
+        {
+            var selected = await _context.Rooms
+                .Where(e => e.OpeningTimeFrom == timeFrom &&
+                        e.Name == name)
+                .ToListAsync();
+
+            return selected.Select(x => _mapper.Map<RoomModel>(x)).FirstOrDefault();
+        }
+
+        public async Task<IList<RoomModel>> GetRoomsPaginated(int size, int index)
+        {
+            
+
+            var itemsOnPage = await _context.Rooms
+                .Include(e => e.Reservations)
+                .OrderBy(e => e.Id)
+                .Skip(size * index)
+                .Take(size)
+                .ToListAsync();
+
+            return itemsOnPage.Select(x => _mapper.Map<RoomModel>(x)).ToList();
+        }
+
+        public Task<long> GetTotalRoomsCount()
+        {
+            var totalRooms = _context.Rooms.LongCount();
+            // FIXME: Resolve null table
+            return Task.FromResult(totalRooms);
         }
     }
 }

@@ -8,10 +8,9 @@ namespace HwAspNetCoreBlazor.API.Extensions
 {
     public static class StartupConfigurationExtensions
     {
-        public static void RegisterRepositories( this IServiceCollection services )
+        public static void RegisterRepository( this IServiceCollection services )
         {
             services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddScoped<IReservationRepository, ReservationRepository>();
         }
 
         public static void ConfigureMappingProfiles( this IServiceCollection services )

@@ -1,35 +1,33 @@
-﻿using HwAspNetCoreBlazor.Core.Models;
+﻿using HwAspNetCoreBlazor.Core.Interfaces.Repositories;
+using HwAspNetCoreBlazor.Core.Models;
+using HwAspNetCoreBlazor.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HwAspNetCoreBlazor.Services
 {
-    public class ReservationService
+    public class ReservationService : IReservationService
     {
-        private readonly HttpClient _client;
+        private readonly IReservationRepository _repository;
+        private readonly ILogger<ReservationService> _logger;
 
-        public ReservationService(HttpClient client)
+        public ReservationService(IReservationRepository repository, ILogger<ReservationService> logger)
         {
-            client.BaseAddress = new Uri("https://localhost");
-            client.DefaultRequestHeaders.Add("Accept", "application / frontend");
-            client.DefaultRequestHeaders.Add("User-Agent", "BlazorFrontEndSample");
-
-            _client = client;
+            _repository = repository;
+            _logger = logger;
         }
 
-        public async Task<IEnumerable<ReservationModel>> GetAllReservations()
+        public async Task<ReservationModel> SaveReservation(string roomName,ReservationModel reservation)
         {
-            var response = await _client.GetAsync("/Reservations");
+            var existingReservation = await _repository.GetByRoomNameAndDateAsync(reservation.ReservationDateTime, roomName);
 
-            response.EnsureSuccessStatusCode();
-
-            using var resourceStream = await response.Content.ReadAsStreamAsync();
-                return await JsonSerializer.DeserializeAsync<IEnumerable<ReservationModel>>(resourceStream);
+            if (existingReservation == null)
+            {
+                return await _repository.SaveReservationAsync(reservation, roomName);
+            }
+            else return null;
         }
     }
 }

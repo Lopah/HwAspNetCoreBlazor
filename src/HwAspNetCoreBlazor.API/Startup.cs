@@ -1,4 +1,3 @@
-using System;
 using HwAspNetCoreBlazor.API.Extensions;
 using HwAspNetCoreBlazor.Data;
 using Microsoft.AspNetCore.Builder;
@@ -29,7 +28,7 @@ namespace HwAspNetCoreBlazor.API
             });
             services.ConfigureMappingProfiles();
             
-            services.RegisterRepositories( );
+            services.RegisterRepository( );
 
             services.AddControllers( );
         }
@@ -42,11 +41,7 @@ namespace HwAspNetCoreBlazor.API
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            //app.UseAuthorization();
 
             app.UseCors();
 

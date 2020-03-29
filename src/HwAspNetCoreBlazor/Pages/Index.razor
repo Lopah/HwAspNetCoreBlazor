@@ -1,0 +1,74 @@
+﻿@page "/"
+@inject IRoomService  RoomsService
+
+@if (paginatedItems == null || !paginatedItems.Data.Any())
+{
+    <p>There were no rooms found. Please populate the database with data.</p>
+}
+
+else
+{
+    <h2 class="modal-title">Rooms</h2>
+    <div class="row">
+        @foreach (var room in paginatedItems.Data)
+        {
+            <div class="card col-2">
+                <div class="card-header">
+                    @room.Name
+                </div>
+                <div class="card-body">
+                    @if (room.Description.Length > 500)
+                    {
+                        GetTrimmedVersion(room.Description);
+                    }
+                    else
+                    {
+                        @room.Description;
+                    }
+                </div>
+                <div class="card-footer">
+                    <a href="@($"/Room/Create/{room.Name}")" class="btn-link">Book Now!</a>
+                </div>
+            </div>
+
+        }
+    </div>
+}
+
+
+    @code {
+        int pageSize = 5;
+        int pageIndex = 0;
+        PaginatedItemsViewModel<RoomModel> paginatedItems;
+
+protected override Task OnParametersSetAsync() => LoadPage();
+
+
+    string GetTrimmedVersion(string value)
+    {
+        StringBuilder builder = new StringBuilder();
+        var trimmedString = value.Substring(0, 498);
+        builder.Append(trimmedString);
+        builder.Append("...");
+        return builder.ToString();
+    }
+
+    async void Previous()
+    {
+        pageIndex--;
+        await LoadPage();
+    }
+
+    async void Next()
+    {
+        pageIndex++;
+        await LoadPage();
+    }
+
+    async Task<Task> LoadPage()
+    {
+        paginatedItems = await RoomsService.GetPaginatedItemsAsync(pageSize, pageIndex);
+
+        return Task.CompletedTask;
+    }
+    }

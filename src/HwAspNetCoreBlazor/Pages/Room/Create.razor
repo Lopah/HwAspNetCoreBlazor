@@ -1,0 +1,118 @@
+﻿@page "/Room/Create/{Name}"
+@inject IRoomService RoomService
+@inject ILogger<Create> Logger
+@inject IRoomRepository RoomRepository
+@inject NavigationManager NavigationManager
+
+<h2 class="modal-title">Booking for room: @_model?.Name</h2>
+<p>Room description: @_model?.Description</p>
+<div class="col-6">
+    <div class="row">
+        <strong>Date</strong>
+        <input type="date" @bind-value="CurrentDay" />
+    </div>
+    <a class="btn bg-warning mt-4" href="/">Back</a>
+</div>
+
+<div class="col-6">
+    <div class="row">
+        <h3>Hour:</h3>
+    </div>
+    <div>
+        @if (_timeSlots != null)
+        {
+            @foreach (var slot in _timeSlots)
+            {
+                @if (_model.Reservations.Where(reservation => reservation.ReservationDateTime.Hour.ToString() == slot.Key.Split(":")[0]
+                        && reservation.ReservationDateTime.Date == _currentDay.Date).Any())
+                {
+                    <a class="btn btn-danger disabled">@slot.Key - @slot.Value</a>
+                }
+                else
+                {
+                    <a class="btn bg-info" @onclick="() => Clicked(slot.Key)"> @slot.Key - @slot.Value </a>
+                }
+            }
+        }
+    </div>
+    <a @bind-value="@_currentNextString" @bind-value:event="Clicked" @onclick="() => Navigate()" class="btn bg-primary">Next</a>
+</div>
+
+
+
+@code {
+    private RoomModel _model;
+
+    private Dictionary<string, string> _timeSlots;
+
+    private DateTime _currentDay = DateTime.Now;
+
+    private DateTime CurrentDay
+    {
+        get
+        {
+            return _currentDay;
+        }
+        set
+        {
+            if (value.Date < DateTime.Now.Date)
+                return;
+            _currentDay = value;
+        }
+    }
+
+    private string _currentNextString = "";
+
+    private string nextLink = $"/Room/Create/Finish/";
+
+    private ElementReference nextButton { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        Logger.LogInformation($"Now loading a room with name: {Name}");
+
+        return LoadPage();
+    }
+
+    private async Task<Task> LoadPage()
+    {
+        _model = await RoomService.GetRoomByNameAsync(Name);
+
+        _timeSlots = await RoomService.GetAllValidHours(_model);
+
+        _currentDay = DateTime.Now;
+
+        return Task.CompletedTask;
+    }
+
+    private void ChangedDate()
+    {
+        if (_currentDay < DateTime.Now.Date)
+        {
+            _currentDay = DateTime.Now.Date;
+        }
+        else
+        {
+            // FIXME: look for Reservation for the given day
+        }
+
+    }
+
+    private void Clicked(string timeFrom)
+    {
+        int time = Convert.ToInt32(timeFrom.Split(":")[0]);
+
+        _currentNextString = nextLink + $"{Name}/" + _currentDay.Date.ToString("MM-dd-yyyy") + "/" + time;
+    }
+
+    private void Navigate()
+    {
+        if (_currentNextString != string.Empty)
+        {
+            NavigationManager.NavigateTo(_currentNextString);
+        }
+    }
+}

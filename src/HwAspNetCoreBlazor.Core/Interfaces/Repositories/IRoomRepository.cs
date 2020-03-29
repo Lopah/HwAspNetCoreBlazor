@@ -13,5 +13,13 @@ namespace HwAspNetCoreBlazor.Core.Interfaces.Repositories
         Task<IList<RoomModel>> GetByTimeFromUntilAsync(int timeFrom, int timeTo);
 
         Task<RoomModel> GetByNameAsync(string name);
+
+        Task<IList<RoomModel>> GetRoomsPaginated(int size, int index);
+
+        Task<long> GetTotalRoomsCount();
+
+        Task<RoomModel> GetRoomByNameAndDateAsync(string name, int timeFrom);
+
+        Task<IList<RoomModel>> GetRoomByDateAsync();
     }
 }
