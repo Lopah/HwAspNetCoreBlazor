@@ -1,4 +1,4 @@
-# This project is currently under development
+# This project is a showcase of my school work
 
 
 # What this project does
